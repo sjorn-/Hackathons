@@ -9,9 +9,9 @@ We programmed each fruit to make a different noise when touched.
 
 Project worked on by:
 
-Sean Innes<br>
+[Sean Innes](seaninn.es)<br>
 [Aleena Baig](https://uk.linkedin.com/in/aleenab)<br>
-Raef Coles<br>
+[Raef Coles](https://github.com/RcColes)<br>
 
 Sounds from :<br>
 [http://99sounds.org/drum-samples/](http://99sounds.org/drum-samples/)<br>
