@@ -2,19 +2,22 @@ import pygame.mixer
 from pygame.mixer import Sound
 import RPi.GPIO as GPIO
 import time
+import sys
 
 #pygame init.#
 pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.mixer.init()
 
+soundBoard = "Horn" if (len(sys.argv) == 1) else sys.argv[1]
+
 #Fruit Listed here with GPIO connectors.#
 #('name', port, Sound("file"), False, 0)#
-fruit = [['Apple',  26, Sound("./sounds/Horn 1.ogg"), False, 0],
-         ['Orange', 21, Sound("./sounds/Horn 2.ogg"), False, 0],
-         ['Banana', 20, Sound("./sounds/Horn 3.ogg"), False, 0],
-         ['Tomato', 16, Sound("./sounds/Horn 4.ogg"), False, 0],
-         ['Kiwi',   19, Sound("./sounds/Horn 5.ogg"), False, 0],
-         ['Carrot', 13, Sound("./sounds/Horn 6.ogg"), False, 0]]
+fruit = [['Apple',  26, Sound("./sounds/" + soundBoard + " 1.ogg"), False, 0],
+         ['Orange', 21, Sound("./sounds/" + soundBoard + " 2.ogg"), False, 0],
+         ['Banana', 20, Sound("./sounds/" + soundBoard + " 3.ogg"), False, 0],
+         ['Tomato', 16, Sound("./sounds/" + soundBoard + " 4.ogg"), False, 0],
+         ['Kiwi',   19, Sound("./sounds/" + soundBoard + " 5.ogg"), False, 0],
+         ['Carrot', 13, Sound("./sounds/" + soundBoard + " 6.ogg"), False, 0]]
 
 #GPIO Setup.#
 GPIO.setmode(GPIO.BCM)
