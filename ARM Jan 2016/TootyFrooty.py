@@ -23,8 +23,8 @@ fruit = [['Apple',  26, Sound("./sounds/" + soundBoard + " 1.ogg"), False, 0],
 
 #GPIO Setup.#
 GPIO.setmode(GPIO.BCM)
-for x in fruit:
-    GPIO.setup(x[1], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+for i in fruit:
+    GPIO.setup(i[1], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 #Input loop#
 #Loops through the list of fruit, checks if being touched, plays sound if so.#
@@ -34,7 +34,7 @@ while True:
         if (fruit[i][3] != curButtonState):
             if (curButtonState):
                 if (time.time() - fruit[i][4] > delay):
-                    print(fruit[i][0] + " Pressed")
+                    #print(fruit[i][0] + " Pressed")
                     fruit[i][2].play()
                     fruit[i][4] = time.time()
         fruit[i][3] = curButtonState
