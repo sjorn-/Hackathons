@@ -64,13 +64,17 @@ for i in range(0, len(soundList) - 1):
     soundList[i] = sorted(soundList[i], key=str.lower)
     print(soundList[i])
 
-soundList = [list(x) for x in zip(*soundList)]
-fruitList.append(Fruit('Apple', 26, soundList[0], False, 0, 0.2))
-fruitList.append(Fruit('Orange', 21, soundList[1], False, 0, 0.2))
-fruitList.append(Fruit('Banana', 20, soundList[2], False, 0, 0.2))
-fruitList.append(Fruit('Tomato', 16, soundList[3], False, 0, 0.2))
-fruitList.append(Fruit('Kiwi', 19, soundList[4], False, 0, 0.2))
-fruitList.append(Fruit('Carrot', 13, soundList[5], False, 0, 0.2))
+newsoundList = []
+for I in range(0,5):
+    newsoundList[I].append(soundList[I])
+
+
+fruitList.append(Fruit('Apple', 26, newsoundList[0], False, 0, 0.2))
+fruitList.append(Fruit('Orange', 21, newsoundList[1], False, 0, 0.2))
+fruitList.append(Fruit('Banana', 20, newsoundList[2], False, 0, 0.2))
+fruitList.append(Fruit('Tomato', 16, newsoundList[3], False, 0, 0.2))
+fruitList.append(Fruit('Kiwi', 19, newsoundList[4], False, 0, 0.2))
+fruitList.append(Fruit('Carrot', 13, newsoundList[5], False, 0, 0.2))
 
 #Fruit Listed here with GPIO connectors.#
 #('name', port, Sound("file"), False, 0)#
