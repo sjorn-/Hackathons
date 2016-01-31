@@ -9,7 +9,7 @@ We programmed each fruit to make a different noise when touched.
 
 Project worked on by:
 
-[Sean Innes](seaninn.es)<br>
+[Sean Innes](http://seaninn.es/)<br>
 [Aleena Baig](https://uk.linkedin.com/in/aleenab)<br>
 [Raef Coles](https://github.com/RcColes)<br>
 
