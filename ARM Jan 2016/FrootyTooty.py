@@ -58,9 +58,10 @@ for filename in os.listdir(os.getcwd() + "/sounds"):
         if placed == False:
             soundList.append([os.path.basename(filename[:-5])])
             soundList[len(soundList) - 1].append(filename)
-    	print(list)
+
 
 for i in range(0, len(soundList) - 1):
+    print(soundList[i])
     soundList[i].pop(0)
     soundList[i] = sorted(soundList[i], key=str.lower)
 
