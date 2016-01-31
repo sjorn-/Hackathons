@@ -15,3 +15,6 @@ Project worked on by:<br>
 Sounds from :<br>
 [http://99sounds.org/drum-samples/](http://99sounds.org/drum-samples/)<br>
 [https://www.freesound.org](https://www.freesound.org)
+[http://soundbible.com/](http://soundbible.com/)
+[http://www.orangefreesounds.com/](http://www.orangefreesounds.com/)
+[https://maps.djtechtools.com](https://maps.djtechtools.com)
