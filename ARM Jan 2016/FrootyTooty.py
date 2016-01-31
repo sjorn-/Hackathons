@@ -60,9 +60,9 @@ for filename in os.listdir(os.getcwd() + "/sounds"):
 
 
 for i in range(0, len(soundList) - 1):
-    print(soundList[i])
     soundList[i].pop(0)
     soundList[i] = sorted(soundList[i], key=str.lower)
+    print(soundList[i])
 
 soundList = [list(x) for x in zip(*soundList)]
 fruitList.append(Fruit('Apple', 26, soundList[0], False, 0, 0.2))
