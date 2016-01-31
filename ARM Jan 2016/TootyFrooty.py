@@ -34,7 +34,7 @@ while True:
         if (fruit[i][3] != curButtonState):
             if (curButtonState):
                 if (time.time() - fruit[i][4] > delay):
-                    print(fruit[i][0] + " Pressed")
+                    #print(fruit[i][0] + " Pressed")
                     fruit[i][2].play()
                     fruit[i][4] = time.time()
         fruit[i][3] = curButtonState
