@@ -10,6 +10,8 @@ pygame.mixer.init()
 
 soundBoard = "Horn" if (len(sys.argv) == 1) else sys.argv[1]
 
+delay = float(sys.argv[2]) if (len(sys.argv) == 3) else 0.2
+
 #Fruit Listed here with GPIO connectors.#
 #('name', port, Sound("file"), False, 0)#
 fruit = [['Apple',  26, Sound("./sounds/" + soundBoard + " 1.ogg"), False, 0],
@@ -31,7 +33,7 @@ while True:
         curButtonState = GPIO.input(fruit[i][1])
         if (fruit[i][3] != curButtonState):
             if (curButtonState):
-                if (time.time() - fruit[i][4] > 0.2):
+                if (time.time() - fruit[i][4] > delay):
                     print(fruit[i][0] + " Pressed")
                     fruit[i][2].play()
                     fruit[i][4] = time.time()

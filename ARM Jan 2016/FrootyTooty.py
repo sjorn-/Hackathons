@@ -45,17 +45,20 @@ class Fruit():
 fruitList = []
 soundList = []
 for filename in os.listdir(os.getcwd() + "/sounds"):
-    placed = false
+    placed = False
     if len(soundList) == 0:
-        soundList.append([os.path.basename(filename)[:-2]])
-        placed == true
+        soundList.append([os.path.basename(filename)[:-5]])
+        placed == True
     else:
         for list in soundList:
-            if list[0] == os.path.basename(filename)[:-2]:
+	    print(list)
+            if list[0] == os.path.basename(filename)[:-5]:
                 list.append(filename)
-                placed = true
-        if placed == false:
-            soundList.append([os.path.basename(filename)[:-2]])
+                placed = True
+        if placed == False:
+            soundList.append(os.path.basename(filename[:-5]))
+	    soundList.append(filename)
+    	print(list)
 
 for i in range(0, len(soundList) - 1):
     soundList[i].pop(0)
@@ -82,10 +85,10 @@ fruit = [['Apple',  26, [Sound("./sounds/Horn 1.ogg"), Sound("./sounds/Drum 1.og
 #Input loop#
 #Loops through the list of fruit, checks if being touched, plays sound if so.#
 while True:
-    for fruit in fruitList):
+    for fruit in fruitList:
         if fruit.isPressed():
             if fruit.getName() != 'Carrot':
-                fruit.play():
+                fruit.play()
             else:
                 for item in fruitList:
                     item.cycle()
