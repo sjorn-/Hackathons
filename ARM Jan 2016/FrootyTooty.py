@@ -56,8 +56,8 @@ for filename in os.listdir(os.getcwd() + "/sounds"):
                 list.append(filename)
                 placed = True
         if placed == False:
-            soundList.append(os.path.basename(filename[:-5]))
-	    soundList.append(filename)
+            soundList.append([os.path.basename(filename[:-5])])
+	        soundList[len(soundList)].append(filename)
     	print(list)
 
 for i in range(0, len(soundList) - 1):
