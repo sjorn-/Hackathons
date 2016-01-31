@@ -1,6 +1,6 @@
 #TootyFrooty
 
-A project attempting to use fruit as input devices for a raspberry pi
+A project attempting to use fruit as input devices for the Raspberry Pi.
 
 We used very basic materials to charge up the fruit and then use the discharge upon touching as input for the device.
 We programmed each fruit to make a different noise when touched.
