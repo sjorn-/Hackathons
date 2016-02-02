@@ -5,6 +5,20 @@ A project attempting to use fruit as input devices for the Raspberry Pi.
 We used very basic materials to charge up the fruit and then use the discharge upon touching as input for the device.
 We programmed each fruit to make a different noise when touched.
 
+#####Some Pictures
+
+######The First Apple
+
+![First Apple](./images/FirstApple.jpg)
+
+######The Final Tooty Frooty Lineup
+
+![The Tootiest Fruit](./images/TheTootyFrootyLineup.jpg)
+
+######Fruit Inputs Working
+
+![Code Outputs](./images/CodeOutputs.jpg)
+
 #####Credits
 
 Project worked on by:<br>
@@ -14,7 +28,7 @@ Project worked on by:<br>
 
 Sounds from :<br>
 [http://99sounds.org/drum-samples/](http://99sounds.org/drum-samples/)<br>
-[https://www.freesound.org](https://www.freesound.org)
-[http://soundbible.com/](http://soundbible.com/)
-[http://www.orangefreesounds.com/](http://www.orangefreesounds.com/)
-[https://maps.djtechtools.com](https://maps.djtechtools.com)
+[https://www.freesound.org](https://www.freesound.org)<br>
+[http://soundbible.com/](http://soundbible.com/)<br>
+[http://www.orangefreesounds.com/](http://www.orangefreesounds.com/)<br>
+[https://maps.djtechtools.com](https://maps.djtechtools.com)<br>
