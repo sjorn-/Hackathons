@@ -19,6 +19,10 @@ We programmed each fruit to make a different noise when touched.
 
 ![Code Outputs](./images/CodeOutputs.jpg)
 
+#####Notes
+
+The [FrootyTooty.py](./FrootyTooty.py) file attempts to use one of the inputs as a toggle between soundboards, but is currently not working correctly. <br> [TootyFrooty.py](./TootyFrooty.py) works by taking in a set of sounds based on the word entered with the command, assuming that there is a sound for each fruit. This is working correctly and the code is relatively simple to look at and read.
+
 #####Credits
 
 Project worked on by:<br>
