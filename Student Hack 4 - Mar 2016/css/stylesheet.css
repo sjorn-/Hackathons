@@ -1,0 +1,79 @@
+.row {
+    background-color: #e0f7fa;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+
+#messages, #fields{
+    height:97%;
+    overflow:hidden;
+    overflow-y:scroll;
+}
+
+#chatBox, #field{
+    height: 100%;
+    background-color: white;
+}
+
+/*--------------------------
+Background colours of sections
+--------------------------*/
+
+/*#accidentID{
+    background-color: #e0f7fa;
+    border: 1px solid black;
+}
+
+#cards{
+    background-color: #b2ebf2;
+    border: 1px solid black;
+}
+
+#opponents{
+    background-color: #80deea;
+    border: 1px solid black;
+}
+
+#field{
+    background-color: #4dd0e1;
+    border: 1px solid black;
+    height: 100%;
+}
+
+#peopleData{
+    background-color: #26c6da;
+    border: 1px solid black;
+    height : 100%;
+}
+
+#chatBox{
+    background-color: #00bcd4;
+    border: 1px solid black;
+    height: 100%;
+}
+
+#inputBox{
+    background-color: #00acc1;
+    border: 1px solid black;
+    height: 100%;
+}*/
+
+/*--------------------------
+Heights of rows
+--------------------------*/
+
+#title{
+    height:7vh;
+}
+
+#row1{
+    height:7vh;
+}
+
+#row2{
+    height:60vh;
+}
+
+#row3{
+    height:26vh;
+}

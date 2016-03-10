@@ -16,38 +16,61 @@ var get = require('./get.js');
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var users = {} //socket.id -> groupname
 var groups = {} //groupname -> [usernames]
-var readies = {}
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
+app.get('/css/materialize.min.css', function(req, res){
+  res.sendFile(__dirname + '/css/materialize.min.css');
+});
+app.get('/css/stylesheet.css', function(req, res){
+  res.sendFile(__dirname + '/css/stylesheet.css');
+});
+app.get('/game.js', function(req, res){
+  res.sendFile(__dirname + '/game.js');
+});
+app.get('/js/materialize.min.js', function(req, res){
+  res.sendFile(__dirname + '/js/materialize.min.js');
+});
+app.get('/font/roboto/Roboto-Regular.woff2', function(req, res){
+  res.sendFile(__dirname + '/font/roboto/Roboto-Regular.woff2');
+});
+app.get('/font/roboto/Roboto-Regular.woff', function(req, res){
+  res.sendFile(__dirname + '/font/roboto/Roboto-Regular.woff');
+});
+app.get('/font/roboto/Roboto-Regular.ttf', function(req, res){
+  res.sendFile(__dirname + '/font/roboto/Roboto-Regular.ttf');
+});
 
 function severityConvert(x){
-    var severityMap = {slight : 1, serious : 2, fatal : 3}
-    return severityMap[x];
+    var severityMap = {Slight : 1, Serious : 2, Fatal : 3}
+    return (severityMap[x]) ? severityMap[x] : 100;
 }
 function weatherConvert(x){
 	var weatherMap = {"Fine no high winds" : 0, "Raining no high winds" : 1, "Fine + high winds" : 2, "Raining + high winds" : 3, "Snowing no high winds" : 4}
-    return weatherMap[x];
+    return (weatherMap[x]) ? weatherMap[x] : 100;
 }
 function lightConvert(x){
 	var lightMap = {"Daylight" : 0, "Darkness - lights lit" : 1, "Darkness - lighting unknown" : 2, "Darkness - lights unlit" : 3}
-	return lightMap[x];
+	return (lightMap[x]) ? lightMap[x] : 100;
 }
 function id(x){
-	return x
+    return x;
 }
 
 var mapMap = {"Accident severity" : severityConvert, "Number of vehicles" :id, "Number of casualties" : id, "Speed limit" : id, "Light conditions" : lightConvert, "Weather conditions" : weatherConvert}
 
 // Map of User Names to Session ID
 var userToId = {};
-// 
+//
 var cards = {};
 // Cards that have been played in this game
 var turnCards = [];
+var users = {} //socket.id -> groupname
+var readies = {}
+
+
 
 
 io.on('connection', function(socket){
@@ -63,6 +86,7 @@ io.on('connection', function(socket){
     if (groups[data.token]) groups[data.token].push(data.user);
     else groups[data.token] = [data.user];
     console.log(groups[data.token]);
+    io.sockets.in(data.token).emit('chat message', data.user + " has joined " + data.token);
   });
 
   //Figure out who won the previous round. The cards can once again be checked
@@ -74,6 +98,7 @@ io.on('connection', function(socket){
       var x = mapMap[data.field](turnCards[i].card[data.field]);
       console.log(data.field);
       console.log(turnCards[i].card[data.field], turnCards[i].user);
+      console.log(x)
       if (x >= max) {
         max = x;
         console.log(x);
@@ -96,7 +121,9 @@ io.on('connection', function(socket){
           console.log("we should not be here");
 
           if (groups[data.token][i]) {
-            io.sockets.in(data.token).emit('chat message', groups[data.token][i] + " is out.");
+            // io.sockets.in(data.token).emit('chat message', groups[data.token][i] + " is out.");
+            io.sockets.in(data.token).emit('out', groups[data.token][i]); //The user that won.
+
             groups[data.token][i] = undefined;
           }
         }
@@ -106,7 +133,6 @@ io.on('connection', function(socket){
       io.sockets.in(data.token).emit('win', rndWin); //The user that won.
     } else {
       setTimeout(function(){
-	if (!turnCards) turnCards = []; //TODO THIS IS A PROBLEM FIX ME NOW
         for (var i = 0; i < groups[data.token].length; i++) {
           if (groups[data.token][i]) {
             console.log(groups[data.token][i] + " casting " + cards[groups[data.token][i]][0]);
@@ -115,7 +141,7 @@ io.on('connection', function(socket){
           turnCards.push({card:cards[groups[data.token][i]].shift(), user:groups[data.token][i]});
         }
         }
-      }, 50);
+      }, 0);
     }
   });
   //
@@ -126,6 +152,10 @@ io.on('connection', function(socket){
   //   return [{id:'a', field1:4, field2:4}, {id:'a', field1:4, field2:4}]; //Player 2
   // }
 
+  // socket.on('reset', function (data) {
+  //
+  // })
+
   socket.on('ready', function (data) {
     console.log("Called");
     console.log(socket.id);
@@ -133,10 +163,10 @@ io.on('connection', function(socket){
     else readies[data.token] = [data.user];
     io.sockets.in(data.token).emit('chat message', data.user + " is now ready.");
     if (readies[data.token].length == groups[data.token].length && groups[data.token].length > 1) {
-      io.sockets.in(data.token).emit('gameInit', {numPlayers:groups[data.token].length, first:data.user});
+      io.sockets.in(data.token).emit('gameInit', {cardCount:10, first:data.user});
       console.log("Cast");
       for (var i = 0; i < groups[data.token].length; i++) {
-        cards[groups[data.token][i]] = get.getCards(10);//getCards(); //Stand in
+        cards[groups[data.token][i]] = get.getCards(10); //change the above number when changing this
         console.log("Cast (inner) " + groups[data.token][i]);
         if (!userToId[groups[data.token][i]]) console.log("Yeah well of course this was it...");
         io.to(userToId[groups[data.token][i]]).emit('castCard', cards[groups[data.token][i]][0]);
@@ -148,9 +178,15 @@ io.on('connection', function(socket){
 
   socket.on('disconnect', function(data) {
     if (users[socket.id]) {
+      io.sockets.in(users[socket.id].token).emit('chat message', users[socket.id].user + " has left " + users[socket.id].token);
       var index = groups[users[socket.id].token].indexOf(users[socket.id].user);
-      userToId[data.user] = undefined;
       groups[users[socket.id].token].splice(index, 1);
+
+      if (groups[users[socket.id].token].length === 0) {
+        readies = {};
+      }
+
+      userToId[data.user] = undefined;
       users[socket.id] = undefined;
     }
   });

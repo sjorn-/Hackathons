@@ -1,0 +1,219 @@
+<!-- Make the user input a group name and then they will be added to a list
+contained in a hashmap for this group, for now just a chat will be made so
+chat rooms can be found using group names. -->
+
+<!doctype html>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/stylesheet.css" />
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <!-- <script src="http://code.jquery.com/jquery-1.11.1.js"></script> -->
+</head>
+
+<body>
+        <div class="row" id="row0">
+            <div class="col s12" id="title">
+                <h5>Traffic Accidents: TCG</h5>
+            </div>
+        </div>
+        <div class="row" id="row1">
+            <div class="col s5" id="accidentID">
+                <div class="card-panel" id="card-id">
+                    ID
+                </div>
+            </div>
+            <div class="col s3" id="cards">
+                <div class="card-panel" id="remaining-cards">
+                    Remaining Cards: XX
+                </div>
+            </div>
+            <div class="col s4" id="opponents">
+                <div class="card-panel" id="cp">
+                    Chat
+                </div>
+            </div>
+        </div>
+        <div class="row" id="row2">
+            <div class="col s8" id="field">
+                <div class="collection" id="fields"></div>
+            </div>
+            <div class="col s4" id="chatBox">
+                <ul class="collection" id="messages"></ul>
+            </div>
+        </div>
+        <div class="row" id="row3">
+            <div class="col s8" id="peopleData">
+                <p></p>
+            </div>
+            <div class="col s4" id="inputBox">
+                <form id="submit">
+                    <input class="input-field" id="m" autocomplete="off" />
+                    <button class="waves-effect btn" id="b">Ready</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="modal1" class="modal">
+          <div class="modal-content">
+              <div class="row">
+                <form class="col s12" id="login">
+                  <div class="row">
+                    <div class="input-field col s6">
+                      <input id="room_name" type="text" class="validate">
+                      <label for="room_name">Room Name</label>
+                    </div>
+                    <div class="input-field col s6">
+                      <input id="user_name" type="text" class="validate">
+                      <label for="user_name">User Name</label>
+                    </div>
+                  </div>
+                  <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                      <i class="material-icons right">send</i>
+                  </button>
+                </form>
+              </div>
+          </div>
+          <div class="modal-footer">
+
+          </div>
+        </div>
+
+    <script>
+        // "strict mode";
+        var socket = io();
+        //$('#modal1').openModal();
+        var group = prompt("Enter the group name: ", "global");
+        var usr = prompt("Enter your user name: ", "global");
+        $('#cp').text("Chat: " + usr + "@" + group)
+
+        // $('#login').submit(function(){
+        //     console.log(group);
+        //     console.log(usr);
+        //     if(group.length > 0 && usr.length > 0){
+        //         group = $(room_name).textContent;
+        //         usr = $(user_name).textContent;
+        //
+        //         $('#modal1').closeModal();
+        //     } else {
+        //         $('#modal1').openModal();
+        //     }
+        //     return false
+        // });
+
+
+
+        var isChooser = false;
+        var cardCount = 0;
+
+        socket.emit('join', {
+            token: group,
+            user: usr
+        });
+
+        $('#submit').submit(function(){
+          if ($('#b')[0].textContent == "Ready"){
+            socket.emit('ready', {token:group, user:usr});
+              $('#b')[0].textContent = "Send";
+          } else {
+              socket.emit('chat message', {message:$('#m').val(), token:group, user:usr});
+              $('#m').val('');
+          }
+          return false;
+        });
+
+        socket.on('chat message', function(msg) {
+            $('#messages').append($('<li class="collection-item">').text(msg));
+            $('#messages').scrollTop(Number.MAX_VALUE);
+        });
+
+        socket.on('gameInit', function(data) {
+            cardCount = data.cardCount;
+            $('#remaining-cards').text("Remaining Cards: " + cardCount);
+            if (usr == data.first) {
+                isChooser = true;
+            }
+        });
+
+        socket.on('castCard', function(card){
+          if (cardCount == 0) {
+              return;
+          }
+          console.log("Casted Card");
+          console.log(card);
+          $('#card-id').text(card.description);
+          var fields = Object.keys(card);
+          $('#fields').empty();
+          for (var i = 0; i < fields.length; i++) {
+              if (fields[i] != 'description') {
+                  if (isChooser) {
+                      var e = ($('<a class="collection-item" onclick="selectField(\'' + fields[i] + '\')">').text(fields[i] + ": " + card[fields[i]]));
+                      $('#fields').append(e);
+
+                  } else {
+                      $('#fields').append($('<a class="collection-item grey lighten-3">').text(fields[i] + ": " + card[fields[i]]));
+
+                  }
+              }
+          }
+          if (isChooser) {
+              $('#peopleData').clear();
+              $('#peopleData').append($('<div class="card-panel center-align">').text("Please select a field"));
+          }
+        });
+
+        function selectField(field) {
+            socket.emit('sendField', {
+                field: field,
+                token: group
+            });
+        }
+
+
+        socket.on('castCards', function(data){
+            $('#messages').append($('<li class="collection-item">').text(data.rndWinner + " has won this round!"));
+            $('#messages').scrollTop(Number.MAX_VALUE);
+            isChooser = data.rndWinner == usr;
+            if (isChooser) {
+              cardCount += data.cards.length-1;
+            } else {
+              if(cardCount > 0) {
+                  cardCount -= 1;
+              }
+            }
+            $('#remaining-cards').text("Remaining Cards: " + cardCount);
+
+            $('peopleData').empty();
+            for (var i = 0; i < data.cards.length; i++) {
+              $('peopleData').append($(''))
+              data.cards[i]
+            }
+          //{cards:turnCards, rndWinner:rndWin}
+        });
+
+        socket.on('win', function(winner) {
+            if(winner == usr){
+                $('#messages').append($('<li class="collection-item">').text("You have won the game!"));
+                $('#messages').scrollTop(Number.MAX_VALUE);
+            }
+            else {
+                $('#messages').append($('<li class="collection-item">').text(winner + " has won the game!"));
+                $('#messages').scrollTop(Number.MAX_VALUE);
+            }
+            $('#peopleData').clear();
+            $('#peopleData').append($('<div class="card-panel center-align">').text("Refresh to join a new game"));
+            console.log(winner + " won, clean up");
+
+        })
+    </script>
+</body>
+</html>
