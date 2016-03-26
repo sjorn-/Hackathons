@@ -8,6 +8,6 @@ A very simple method for working it out but actually proved to be fairly effecti
 
 People who worked on this project:
 
-	*Aleena Baig
-	*Isak Falk
-	*Sean Innes
+* Aleena Baig
+* Isak Falk
+* Sean Innes
